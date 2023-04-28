@@ -1,4 +1,5 @@
-APP_NAME = my_app
+APP_NAME = main.
+TEST_NAME = tests
 LIB_STATIC = geometry
 LIB_DIR = libgeometry
 CC = gcc
@@ -9,9 +10,11 @@ CPPFLAGS = -Isrc -Ithirdparty -MP -MMD
 BIN_DIR = bin
 OBJ_DIR = obj
 SRC_DIR = src
+TEST_DIR = test
 
 APP_PATH = $(BIN_DIR)/$(APP_NAME)
 LIB_PATH = $(OBJ_DIR)/$(SRC_DIR)/$(LIB_DIR)/$(LIB_STATIC).a
+TEST_PATH = $(BIN_DIR)/$(TEST_NAME)
 
 SRC_EXT = c
 
@@ -50,3 +53,13 @@ clean:
 .PHONY: run
 run:
 	./$(APP_PATH)
+
+.PHONY: test test_run
+test: $(TEST_PATH)
+
+$(TEST_PATH): $(TEST_OBJECTS) $(LIB_PATH)
+	$(CC) $(CFLAGS) $^ -o $@ -lm
+
+.PHONY: test_run
+test_run: $(TEST_PATH)
+	./$(TEST_PATH)
